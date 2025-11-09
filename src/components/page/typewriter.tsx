@@ -27,5 +27,9 @@ export function Typewriter({ text, speed = 50 }: TypewriterProps) {
     }
   }, [text, speed]);
 
-  return <p>{displayedText}<span className="animate-ping">|</span></p>;
+  // The component was missing a key on the root element.
+  // When the text prop changed, React would try to re-use the old component instance
+  // which caused state issues with the useEffect hook, leading to the text being sliced incorrectly.
+  // Adding a key that changes with the text ensures a fresh component instance is created.
+  return <p key={text}>{displayedText}<span className="animate-ping">|</span></p>;
 }
