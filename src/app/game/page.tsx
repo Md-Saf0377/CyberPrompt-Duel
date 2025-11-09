@@ -1,7 +1,11 @@
+'use client';
+
 import { Header } from '@/components/page/header';
 import { Footer } from '@/components/page/footer';
 import { Section } from '@/components/page/section';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function GamePage() {
   return (
@@ -24,6 +28,14 @@ export default function GamePage() {
                 <div className="w-24 h-24 rounded-full absolute top-0 left-0 border-2 border-primary animate-ping origin-center"></div>
                 <div className="w-24 h-24 rounded-full absolute top-0 left-0 border-2 border-primary/30 animate-pulse"></div>
               </div>
+            </div>
+            <div className="mt-12 flex justify-center">
+              <Button asChild variant="outline" className="font-bold border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all duration-300 backdrop-blur-sm">
+                <Link href="/">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to Home
+                </Link>
+              </Button>
             </div>
           </div>
         </Section>
