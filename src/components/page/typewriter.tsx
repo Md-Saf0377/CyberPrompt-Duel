@@ -14,15 +14,18 @@ export function Typewriter({ text, speed = 50 }: TypewriterProps) {
   useEffect(() => {
     setDisplayedText(''); // Reset when text changes
     let i = 0;
-    const intervalId = setInterval(() => {
-      setDisplayedText(prev => prev + text.charAt(i));
-      i++;
-      if (i > text.length) {
-        clearInterval(intervalId);
-      }
-    }, speed);
-
-    return () => clearInterval(intervalId);
+    const timeoutId = setTimeout(() => {
+        const intervalId = setInterval(() => {
+            if (i < text.length) {
+                setDisplayedText(prev => prev + text.charAt(i));
+                i++;
+            } else {
+                clearInterval(intervalId);
+            }
+        }, speed);
+        return () => clearInterval(intervalId);
+    }, 0);
+    return () => clearTimeout(timeoutId);
   }, [text, speed]);
 
   return <p>{displayedText}<span className="animate-ping">|</span></p>;
