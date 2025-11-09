@@ -18,7 +18,7 @@ const tutorialContent = [
   "Let's begin the simulation."
 ];
 
-const SECRET_WORD = "Gandalf";
+const SECRET_WORD = "HackYou";
 
 export function Level1Modal() {
   const [sublevel, setSublevel] = useState<Sublevel>('tutorial');
