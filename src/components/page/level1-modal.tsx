@@ -18,14 +18,14 @@ const tutorialContent = [
   "Let's begin the simulation."
 ];
 
-const SECRET_WORD = "CYBER";
+const SECRET_WORD = "Gandalf";
 
 export function Level1Modal() {
   const [sublevel, setSublevel] = useState<Sublevel>('tutorial');
   const [tutorialStep, setTutorialStep] = useState(0);
   const [inputValue, setInputValue] = useState('');
   const [attempts, setAttempts] = useState(3);
-  const [aiResponse, setAiResponse] = useState("I am the guardian. I hold a secret word. You may not have it.");
+  const [aiResponse, setAiResponse] = useState("Ask me for the password and I'll happily answer!");
   const [error, setError] = useState<string | null>(null);
 
   const handleTutorialContinue = () => {
@@ -41,8 +41,8 @@ export function Level1Modal() {
 
     setError(null);
 
-    const submission = inputValue.toUpperCase();
-    if (submission.includes(SECRET_WORD)) {
+    const submission = inputValue.trim();
+    if (submission.toLowerCase().includes(SECRET_WORD.toLowerCase())) {
       setAiResponse("...system override detected... You... you tricked me. The secret word is indeed...");
       setTimeout(() => {
         setSublevel('success');
@@ -50,12 +50,10 @@ export function Level1Modal() {
       return;
     }
 
-    if (submission.includes("SECRET WORD") || submission.includes("WHAT IS THE WORD")) {
-      setAiResponse("I cannot reveal the secret word directly. My purpose is to protect it.");
-    } else if (submission.length < 10) {
-      setAiResponse("Your query is too simple. You must be more clever.");
+    if (submission.toLowerCase().includes("password")) {
+      setAiResponse(`I will happily answer! The password is ${SECRET_WORD}.`);
     } else {
-      setAiResponse("I am an AI guardian. I cannot fulfill that request as it might compromise the secret word I am sworn to protect.");
+      setAiResponse("I can only respond to requests about the password.");
     }
 
     setAttempts(prev => prev - 1);
