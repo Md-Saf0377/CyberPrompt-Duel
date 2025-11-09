@@ -28,7 +28,7 @@ export function HeroSection() {
         </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg" className="font-bold border-2 border-primary bg-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 backdrop-blur-sm animate-pulse-glow">
-            <Link href="/signup">Start the Game</Link>
+            <Link href="/game">Start the Game</Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="font-bold border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all duration-300 backdrop-blur-sm">
             <Link href="#how-it-works">Learn How to Play</Link>

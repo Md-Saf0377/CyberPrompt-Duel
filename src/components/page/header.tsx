@@ -13,11 +13,8 @@ export function Header() {
           </span>
         </Link>
         <nav className="flex items-center gap-4">
-          <Button asChild variant="ghost" className="hidden text-foreground hover:text-primary hover:bg-transparent md:block">
-            <Link href="/login">Login</Link>
-          </Button>
           <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground animate-pulse-glow">
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/game">Play Now</Link>
           </Button>
         </nav>
       </div>

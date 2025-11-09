@@ -28,7 +28,7 @@ export function GameplaySection() {
             ))}
           </ul>
           <Button asChild size="lg" className="mt-8 font-bold border-2 border-accent bg-accent/20 text-accent hover:bg-accent hover:text-accent-foreground transition-all duration-300 backdrop-blur-sm animate-pulse-glow">
-            <Link href="/signup">Join Match</Link>
+            <Link href="/game">Join Match</Link>
           </Button>
         </div>
         <div className="flex justify-center items-center opacity-0 animate-fade-in-up animation-delay-200">
