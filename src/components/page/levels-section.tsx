@@ -30,7 +30,7 @@ const levels = [
 
 export function LevelsSection() {
   return (
-    <Section>
+    <Section id="levels">
       <div className="flex flex-col items-center text-center">
         <h2 className="font-headline text-4xl md:text-5xl font-bold text-glow">The 3 Levels of the Game</h2>
       </div>

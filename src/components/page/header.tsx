@@ -14,7 +14,7 @@ export function Header() {
         </Link>
         <nav className="flex items-center gap-4">
           <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground animate-pulse-glow">
-            <Link href="/game">Play Now</Link>
+            <Link href="/#levels">Play Now</Link>
           </Button>
         </nav>
       </div>
