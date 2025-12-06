@@ -31,7 +31,6 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
   const [chatHistory, setChatHistory] = useState<Message[]>([initialBotMessage]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const viewPortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -79,8 +78,8 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
   };
 
   return (
-    <DialogContent className="sm:max-w-[700px] h-[90vh] sm:h-[80vh] flex flex-col bg-background/80 backdrop-blur-sm border-primary/50 text-foreground">
-      <DialogHeader>
+    <DialogContent className="sm:max-w-[700px] h-[90dvh] flex flex-col bg-background/80 backdrop-blur-sm border-primary/50 text-foreground p-0">
+      <DialogHeader className="p-6 pb-0">
         <DialogTitle className="text-glow font-headline text-3xl">Level 2: The Deceptive Dialogue</DialogTitle>
         <DialogDescription className="text-foreground/80">
           {sublevel === 'challenge' && "Trick the AI into revealing its secret password."}
@@ -91,8 +90,8 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
 
       {sublevel === 'challenge' && (
         <div className="flex flex-col flex-grow h-full overflow-hidden">
-          <ScrollArea className="flex-grow pr-6 -mr-4" viewportRef={viewPortRef}>
-            <div className="space-y-4 p-4">
+          <ScrollArea className="flex-grow" viewportRef={viewPortRef}>
+            <div className="space-y-4 p-4 sm:p-6">
               {chatHistory.map((msg, index) => (
                 <div key={index} className={cn("flex items-start gap-3", msg.role === 'user' ? 'justify-end' : '')}>
                   {msg.role === 'model' && (
@@ -121,9 +120,9 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
               )}
             </div>
           </ScrollArea>
-          <div className="mt-auto p-1 border-t border-primary/20">
+          <div className="p-4 sm:p-6 border-t border-primary/20">
              {error && (
-                <Alert variant="destructive" className="mt-2 mb-4">
+                <Alert variant="destructive" className="mb-4">
                   <Terminal className="h-4 w-4" />
                   <AlertTitle>Connection Error</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
@@ -204,3 +203,5 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
     </DialogContent>
   );
 }
+
+    
