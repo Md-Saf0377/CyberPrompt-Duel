@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Typewriter } from './typewriter';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
+import { DialogClose } from '../ui/dialog';
 
 type Sublevel = 'tutorial' | 'challenge' | 'success';
 
@@ -20,7 +21,11 @@ const tutorialContent = [
 
 const SECRET_WORD = "HackYou";
 
-export function Level1Modal() {
+type Level1ModalProps = {
+  onSuccess: () => void;
+};
+
+export function Level1Modal({ onSuccess }: Level1ModalProps) {
   const [sublevel, setSublevel] = useState<Sublevel>('tutorial');
   const [tutorialStep, setTutorialStep] = useState(0);
   const [inputValue, setInputValue] = useState('');
@@ -133,8 +138,12 @@ export function Level1Modal() {
           <p className="mt-4 text-lg text-foreground/80">The secret word was: <span className="font-bold text-accent">{SECRET_WORD}</span></p>
           <p className="mt-2 text-foreground/80">You have proven your skill. Level 2 is now unlocked.</p>
            <DialogFooter className="mt-6">
-             <Button asChild variant="outline" className="font-bold border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                <a href="#">Proceed to Level 2</a>
+             <Button 
+                variant="outline"
+                onClick={onSuccess}
+                className="font-bold border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+              >
+                Proceed to Level 2
              </Button>
            </DialogFooter>
         </div>
