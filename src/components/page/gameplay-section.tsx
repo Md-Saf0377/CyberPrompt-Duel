@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2 } from 'lucide-react';
@@ -38,7 +39,7 @@ export function GameplaySection() {
                 src={gameplayImage.imageUrl}
                 alt={gameplayImage.description}
                 fill
-                className="object-contain rounded-full animate-pulse-glow border-2 border-primary/50"
+                className="object-cover rounded-full animate-pulse-glow border-2 border-primary/50"
                 data-ai-hint={gameplayImage.imageHint}
               />
             </div>
