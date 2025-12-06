@@ -71,11 +71,12 @@ export function LevelsSection() {
     if (level.id === 'level1') {
       setOpenModal('level1');
     } else if (level.id === 'level2') {
-      if (level1Completed) {
+      // Temporarily disabled level gating
+      // if (level1Completed) {
         setOpenModal('level2');
-      } else {
-        setShowLevelGate(true);
-      }
+      // } else {
+      //   setShowLevelGate(true);
+      // }
     } else {
       // Logic for other levels
       setOpenModal(level.id);
