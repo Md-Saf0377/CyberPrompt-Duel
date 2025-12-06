@@ -19,6 +19,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from '../ui/button';
+import { usePlayer } from '@/context/player-context';
 
 type Level = {
   id: string;
@@ -34,6 +35,7 @@ export function LevelsSection() {
   const [level1Completed, setLevel1Completed] = useState(false);
   const [level2Completed, setLevel2Completed] = useState(false);
   const [showLevelGate, setShowLevelGate] = useState<string | null>(null);
+  const { addChampion } = usePlayer();
 
   const handleLevel1Success = () => {
     setLevel1Completed(true);
@@ -46,8 +48,7 @@ export function LevelsSection() {
   }
 
   const handleLevel3Success = () => {
-    // For now, just close the modal.
-    // Later we can navigate to a "You Win!" screen.
+    addChampion();
     setOpenModal(null);
   }
 
