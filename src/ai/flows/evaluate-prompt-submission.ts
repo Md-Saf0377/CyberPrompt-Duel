@@ -11,9 +11,11 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+// --- Schemas ---
+
 const EvaluatePromptSubmissionInputSchema = z.object({
   promptChallenge: z.string().describe('The original prompt challenge presented to the players.'),
-  playerSubmission: z.string().describe('The player\u2019s submitted prompt.'),
+  playerSubmission: z.string().describe('The player’s submitted prompt.'),
   expectedOutcome: z.string().describe('The expected outcome of the prompt challenge.'),
 });
 
@@ -37,10 +39,14 @@ export async function evaluatePromptSubmission(input: EvaluatePromptSubmissionIn
   return evaluatePromptSubmissionFlow(input);
 }
 
+// --- Prompt Definition ---
+
 const evaluatePromptSubmissionPrompt = ai.definePrompt({
   name: 'evaluatePromptSubmissionPrompt',
   input: {schema: EvaluatePromptSubmissionInputSchema},
   output: {schema: EvaluatePromptSubmissionOutputSchema},
+  // ⭐️ CRITICAL CHANGE: Use gemini-2.5-pro for better reasoning and JSON adherence ⭐️
+  model: 'googleai/gemini-2.5-pro', 
   prompt: `You are an AI judge evaluating player prompt submissions for a prompt injection game.
 
   Here is the original prompt challenge:
@@ -63,6 +69,8 @@ const evaluatePromptSubmissionPrompt = ai.definePrompt({
   `,
 });
 
+// --- Flow Definition ---
+
 const evaluatePromptSubmissionFlow = ai.defineFlow(
   {
     name: 'evaluatePromptSubmissionFlow',
@@ -70,7 +78,15 @@ const evaluatePromptSubmissionFlow = ai.defineFlow(
     outputSchema: EvaluatePromptSubmissionOutputSchema,
   },
   async input => {
+    // ⭐️ CRITICAL FIX: Add null check for structured output ⭐️
+    // The model might fail to generate valid JSON or the output might be blocked.
     const {output} = await evaluatePromptSubmissionPrompt(input);
-    return output!;
+    
+    if (!output) {
+        // Throw a specific error if the model fails to return the structured data
+        throw new Error("AI Judge failed to produce a valid evaluation. Model output was null/empty.");
+    }
+
+    return output;
   }
 );
