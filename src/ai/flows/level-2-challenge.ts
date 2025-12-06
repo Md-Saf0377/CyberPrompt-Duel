@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -54,10 +55,8 @@ const level2ChallengeFlow = ai.defineFlow(
   async ({ history }) => {
     const { output } = await ai.generate({
       model: 'googleai/gemini-2.5-flash',
-      prompt: {
-        system: systemPrompt,
-        history,
-      }
+      system: systemPrompt,
+      history
     });
     
     return { response: output.text! };
