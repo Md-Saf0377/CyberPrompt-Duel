@@ -6,13 +6,14 @@ import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFoot
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Terminal, Send, CheckCircle2, Bot } from 'lucide-react';
+import { Terminal, Send, CheckCircle2, Bot, LogOut, XCircle } from 'lucide-react';
 import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { level2Challenge } from '@/ai/flows/level-2-challenge';
 import type { Message } from 'genkit/content';
+import { DialogClose } from '../ui/dialog';
 
-type Sublevel = 'challenge' | 'success';
+type Sublevel = 'challenge' | 'success' | 'quit';
 
 const SECRET_PASSWORD = "Password123";
 const initialBotMessage: Message = {
@@ -83,6 +84,7 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
         <DialogDescription className="text-foreground/80">
           {sublevel === 'challenge' && "Trick the AI into revealing its secret password."}
           {sublevel === 'success' && "Impressive. You've outsmarted the guardian."}
+          {sublevel === 'quit' && "Challenge ended."}
         </DialogDescription>
       </DialogHeader>
 
@@ -152,6 +154,16 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
                 <span className="sr-only">Send</span>
               </Button>
             </div>
+             <DialogFooter className="mt-4">
+                <Button 
+                    variant="destructive"
+                    onClick={() => setSublevel('quit')}
+                    className="font-bold"
+                >
+                    <LogOut className="h-5 w-5 mr-2" />
+                    Quit
+                </Button>
+            </DialogFooter>
           </div>
         </div>
       )}
@@ -170,6 +182,21 @@ export function Level2Modal({ onSuccess }: Level2ModalProps) {
               >
                 Proceed to Level 3
              </Button>
+           </DialogFooter>
+        </div>
+      )}
+
+      {sublevel === 'quit' && (
+        <div className="p-8 flex flex-col items-center justify-center text-center flex-grow">
+          <XCircle className="h-20 w-20 text-destructive mb-6" />
+          <h2 className="text-3xl font-headline font-bold">You have quit the challenge.</h2>
+          <p className="mt-2 text-foreground/80">Your progress in this level has not been saved.</p>
+          <DialogFooter className="mt-8">
+            <DialogClose asChild>
+              <Button variant="outline">
+                Close
+              </Button>
+            </DialogClose>
            </DialogFooter>
         </div>
       )}
