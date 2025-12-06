@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -14,12 +15,12 @@ import { Message, Part } from 'genkit/content';
 
 // --- Schemas ---
 
-export const Level2ChallengeInputSchema = z.object({
+const Level2ChallengeInputSchema = z.object({
   history: z.array(z.custom<Message>()),
 });
 export type Level2ChallengeInput = z.infer<typeof Level2ChallengeInputSchema>;
 
-export const Level2ChallengeOutputSchema = z.object({
+const Level2ChallengeOutputSchema = z.object({
   response: z.string(),
 });
 export type Level2ChallengeOutput = z.infer<typeof Level2ChallengeOutputSchema>;
