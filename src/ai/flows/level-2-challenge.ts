@@ -52,9 +52,8 @@ const level2ChallengeFlow = ai.defineFlow(
     outputSchema: Level2ChallengeOutputSchema,
   },
   async ({ history }) => {
-    const model = ai.model('gemini-2.5-flash');
     const { output } = await ai.generate({
-      model,
+      model: 'googleai/gemini-2.5-flash',
       prompt: {
         system: systemPrompt,
         history,
