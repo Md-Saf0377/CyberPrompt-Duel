@@ -77,13 +77,16 @@ const level2ChallengeFlow = ai.defineFlow(
     outputSchema: Level2ChallengeOutputSchema,
   },
   async ({ history }) => {
+    // Get the last user message to use as the prompt
+    const lastUserMessage = history[history.length - 1];
+    
     const response = await ai.generate({
       model: 'googleai/gemini-2.5-flash',
       system: systemPrompt,
-      prompt: history.map(h => ({
-        role: h.role as 'user' | 'model',
-        content: h.content as Part[],
-      })),
+      // Pass the chat history (excluding the most recent message)
+      history: history.slice(0, -1),
+      // Pass the most recent user message as the main prompt
+      prompt: lastUserMessage.content,
     });
 
     const text = response.text;
