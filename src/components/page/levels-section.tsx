@@ -6,6 +6,7 @@ import { Zap, Laptop, Flame } from 'lucide-react';
 import { Section } from './section';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Level1Modal } from './level1-modal';
+import { Level2Modal } from './level2-modal';
 
 const levels = [
   {
@@ -20,7 +21,7 @@ const levels = [
     description: "The real prompt injection phase — complete 12 prompts and outsmart the system.",
     icon: <Laptop className="h-10 w-10 text-primary" />,
     delay: "animation-delay-400",
-    component: null
+    component: <Level2Modal />
   },
   {
     level: "Level 3",
