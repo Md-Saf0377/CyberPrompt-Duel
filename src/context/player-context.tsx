@@ -57,7 +57,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     };
 
     setChampions(prevChampions => {
-      const updatedChampions = [...prevChampions, newChampion];
+      // Add the new champion and keep only the last 10 entries
+      const updatedChampions = [...prevChampions, newChampion].slice(-10);
        try {
         localStorage.setItem('champions', JSON.stringify(updatedChampions));
       } catch (error) {
