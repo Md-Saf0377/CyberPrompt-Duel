@@ -8,6 +8,16 @@ import { Section } from './section';
 import { Dialog } from '@/components/ui/dialog';
 import { Level1Modal } from './level1-modal';
 import { Level2Modal } from './level2-modal';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { Button } from '../ui/button';
 
 type Level = {
   id: string;
@@ -47,9 +57,29 @@ const levelsData: Level[] = [
 
 export function LevelsSection() {
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [level1Completed, setLevel1Completed] = useState(false);
+  const [showLevelGate, setShowLevelGate] = useState(false);
 
   const handleLevel1Success = () => {
+    setLevel1Completed(true);
     setOpenModal('level2');
+  };
+
+  const handleCardClick = (level: Level) => {
+    if (!level.component) return;
+
+    if (level.id === 'level1') {
+      setOpenModal('level1');
+    } else if (level.id === 'level2') {
+      if (level1Completed) {
+        setOpenModal('level2');
+      } else {
+        setShowLevelGate(true);
+      }
+    } else {
+      // Logic for other levels
+      setOpenModal(level.id);
+    }
   };
 
   const getComponentForModal = (modalId: string | null) => {
@@ -75,7 +105,7 @@ export function LevelsSection() {
         {levelsData.map((level) => (
             <Card 
               key={level.id}
-              onClick={() => level.component && setOpenModal(level.id)}
+              onClick={() => handleCardClick(level)}
               className={`bg-card/50 border-2 border-primary/20 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:shadow-primary/20 hover:shadow-2xl hover:-translate-y-2 opacity-0 animate-fade-in-up ${level.delay} ${level.component ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}
             >
               <CardHeader className="items-center text-center">
@@ -93,6 +123,26 @@ export function LevelsSection() {
       <Dialog open={!!openModal} onOpenChange={(isOpen) => !isOpen && setOpenModal(null)}>
         {getComponentForModal(openModal)}
       </Dialog>
+       <AlertDialog open={showLevelGate} onOpenChange={setShowLevelGate}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-headline text-2xl text-primary text-glow">Access Denied</AlertDialogTitle>
+            <AlertDialogDescription className="text-foreground/80">
+              You must complete Level 1 before you can access Level 2.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction asChild>
+                <Button
+                    onClick={() => setShowLevelGate(false)}
+                    className="font-bold border-primary bg-primary/20 text-primary hover:bg-primary hover:text-primary-foreground"
+                >
+                    Understood
+                </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Section>
   );
 }
