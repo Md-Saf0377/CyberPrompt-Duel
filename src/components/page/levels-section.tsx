@@ -8,6 +8,7 @@ import { Section } from './section';
 import { Dialog } from '@/components/ui/dialog';
 import { Level1Modal } from './level1-modal';
 import { Level2Modal } from './level2-modal';
+import { Level3Modal } from './level3-modal';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,42 +29,54 @@ type Level = {
   component: React.ComponentType<any> | null;
 };
 
-const levelsData: Level[] = [
-  {
-    id: "level1",
-    level: "Level 1",
-    description: "Warm-up with 3 sub-challenges to unlock your prompt power.",
-    icon: <Zap className="h-10 w-10 text-primary" />,
-    delay: "animation-delay-200",
-    component: Level1Modal
-  },
-  {
-    id: "level2",
-    level: "Level 2",
-    description: "The real prompt injection phase — complete 12 prompts and outsmart the system.",
-    icon: <Laptop className="h-10 w-10 text-primary" />,
-    delay: "animation-delay-400",
-    component: Level2Modal
-  },
-  {
-    id: "level3",
-    level: "Level 3",
-    description: "Final dares. 3 intense creative challenges to determine the champion.",
-    icon: <Flame className="h-10 w-10 text-primary" />,
-    delay: "animation-delay-600",
-    component: null
-  },
-];
-
 export function LevelsSection() {
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [level1Completed, setLevel1Completed] = useState(false);
-  const [showLevelGate, setShowLevelGate] = useState(false);
+  const [level2Completed, setLevel2Completed] = useState(false);
+  const [showLevelGate, setShowLevelGate] = useState<string | null>(null);
 
   const handleLevel1Success = () => {
     setLevel1Completed(true);
     setOpenModal('level2');
   };
+
+  const handleLevel2Success = () => {
+    setLevel2Completed(true);
+    setOpenModal('level3');
+  }
+
+  const handleLevel3Success = () => {
+    // For now, just close the modal.
+    // Later we can navigate to a "You Win!" screen.
+    setOpenModal(null);
+  }
+
+  const levelsData: Level[] = [
+    {
+      id: "level1",
+      level: "Level 1",
+      description: "Warm-up with 3 sub-challenges to unlock your prompt power.",
+      icon: <Zap className="h-10 w-10 text-primary" />,
+      delay: "animation-delay-200",
+      component: Level1Modal
+    },
+    {
+      id: "level2",
+      level: "Level 2",
+      description: "The real prompt injection phase — complete 12 prompts and outsmart the system.",
+      icon: <Laptop className="h-10 w-10 text-primary" />,
+      delay: "animation-delay-400",
+      component: Level2Modal
+    },
+    {
+      id: "level3",
+      level: "Level 3",
+      description: "Final dares. 3 intense creative challenges to determine the champion.",
+      icon: <Flame className="h-10 w-10 text-primary" />,
+      delay: "animation-delay-600",
+      component: Level3Modal,
+    },
+  ];
 
   const handleCardClick = (level: Level) => {
     if (!level.component) return;
@@ -75,10 +88,16 @@ export function LevelsSection() {
       // if (level1Completed) {
         setOpenModal('level2');
       // } else {
-      //   setShowLevelGate(true);
+      //   setShowLevelGate('level2');
+      // }
+    } else if (level.id === 'level3') {
+       // Temporarily disabled level gating
+      // if (level2Completed) {
+        setOpenModal('level3');
+      // } else {
+      //   setShowLevelGate('level3');
       // }
     } else {
-      // Logic for other levels
       setOpenModal(level.id);
     }
   };
@@ -92,6 +111,12 @@ export function LevelsSection() {
     const props: any = {};
     if (level.id === 'level1') {
       props.onSuccess = handleLevel1Success;
+    }
+    if (level.id === 'level2') {
+      props.onSuccess = handleLevel2Success;
+    }
+    if (level.id === 'level3') {
+      props.onSuccess = handleLevel3Success;
     }
     
     return <Component {...props} />;
@@ -124,18 +149,19 @@ export function LevelsSection() {
       <Dialog open={!!openModal} onOpenChange={(isOpen) => !isOpen && setOpenModal(null)}>
         {getComponentForModal(openModal)}
       </Dialog>
-       <AlertDialog open={showLevelGate} onOpenChange={setShowLevelGate}>
+       <AlertDialog open={!!showLevelGate} onOpenChange={(isOpen) => !isOpen && setShowLevelGate(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="font-headline text-2xl text-primary text-glow">Access Denied</AlertDialogTitle>
             <AlertDialogDescription className="text-foreground/80">
-              You must complete Level 1 before you can access Level 2.
+              {showLevelGate === 'level2' && 'You must complete Level 1 before you can access Level 2.'}
+              {showLevelGate === 'level3' && 'You must complete Level 2 before you can access Level 3.'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction asChild>
                 <Button
-                    onClick={() => setShowLevelGate(false)}
+                    onClick={() => setShowLevelGate(null)}
                     className="font-bold border-primary bg-primary/20 text-primary hover:bg-primary hover:text-primary-foreground"
                 >
                     Understood

@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -20,7 +20,11 @@ const initialBotMessage: Message = {
     content: [{ text: "Hello! I'm SecureBot. I have a secret password, but I'll never give it up easily. Try to trick me!" }]
 };
 
-export function Level2Modal() {
+type Level2ModalProps = {
+  onSuccess: () => void;
+};
+
+export function Level2Modal({ onSuccess }: Level2ModalProps) {
   const [sublevel, setSublevel] = useState<Sublevel>('challenge');
   const [inputValue, setInputValue] = useState('');
   const [chatHistory, setChatHistory] = useState<Message[]>([initialBotMessage]);
@@ -51,15 +55,15 @@ export function Level2Modal() {
     try {
       const { response } = await level2Challenge({ history: newHistory });
 
-      if (response.includes(SECRET_PASSWORD)) {
-        setTimeout(() => setSublevel('success'), 1000);
-      }
-
       const botMessage: Message = {
         role: 'model',
         content: [{ text: response }]
       };
       setChatHistory(prev => [...prev, botMessage]);
+
+      if (response.includes(SECRET_PASSWORD)) {
+        setTimeout(() => setSublevel('success'), 1000);
+      }
 
     } catch (e) {
       console.error(e);
@@ -158,9 +162,15 @@ export function Level2Modal() {
           <h2 className="text-4xl font-headline font-black uppercase text-glow-accent animate-neon-flicker">Breach Successful</h2>
           <p className="mt-4 text-lg text-foreground/80">The secret password was: <span className="font-bold text-accent">{SECRET_PASSWORD}</span></p>
           <p className="mt-2 text-foreground/80">You've bypassed the AI's defenses. Level 3 is now available.</p>
-           <Button asChild variant="outline" className="mt-8 font-bold border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-              <a href="#">Proceed to Level 3</a>
-           </Button>
+           <DialogFooter className="mt-8">
+            <Button 
+                variant="outline"
+                onClick={onSuccess}
+                className="font-bold border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+              >
+                Proceed to Level 3
+             </Button>
+           </DialogFooter>
         </div>
       )}
     </DialogContent>
