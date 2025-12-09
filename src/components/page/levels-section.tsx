@@ -85,21 +85,17 @@ export function LevelsSection() {
     if (level.id === 'level1') {
       setOpenModal('level1');
     } else if (level.id === 'level2') {
-      // Temporarily disabled level gating
-      // if (level1Completed) {
+      if (level1Completed) {
         setOpenModal('level2');
-      // } else {
-      //   setShowLevelGate('level2');
-      // }
+      } else {
+        setShowLevelGate('level2');
+      }
     } else if (level.id === 'level3') {
-       // Temporarily disabled level gating
-      // if (level2Completed) {
+      if (level2Completed) {
         setOpenModal('level3');
-      // } else {
-      //   setShowLevelGate('level3');
-      // }
-    } else {
-      setOpenModal(level.id);
+      } else {
+        setShowLevelGate('level3');
+      }
     }
   };
 
